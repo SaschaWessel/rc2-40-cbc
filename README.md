@@ -55,7 +55,7 @@ Usage
         $ make
         cc -Wall -g -O3 -funroll-loops -fwhole-program  -o rc2-40-cbc rc2-40-cbc.c
 
-3.  Save the email message to a file and extract the smime attachment:
+3.  Save the email message to a file and extract the S/MIME attachment:
 
         $ munpack example.mime
         smime.p7m (application/x-pkcs7-mime)
@@ -76,11 +76,11 @@ Usage
 
     Explanations:
 
-        byte 464: rc2ParameterVersion (160 ->  40 effective-key-bits,
-                                       120 ->  64 effective-key-bits,
-                                        58 -> 128 effective-key-bits)
-        byte 468: iv (8 bytes initialization vector)
-        byte 478: ciphertext (131408 bytes, we need only the first 32 bytes)
+        offset 464: rc2ParameterVersion (160 ->  40 effective-key-bits,
+                                         120 ->  64 effective-key-bits,
+                                          58 -> 128 effective-key-bits)
+        offset 468: iv (8 bytes initialization vector)
+        offset 478: ciphertext (131408 bytes, we need only the first 32 bytes)
 
 5.  Brute force (may take some time, around 200 CPU hours in the example output below):
 
@@ -113,7 +113,7 @@ Usage
 
         $ openssl rc2-40-cbc -d -in smime.data -out plain.mime -iv FEDCBA9876543210 -K 0001020304
 
-9.  Unpack the mime message:
+9.  Unpack the MIME message:
 
         $ munpack -t plain.mime
 
