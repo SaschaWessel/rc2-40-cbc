@@ -46,21 +46,21 @@ the key and the plaintext is written to stdout. Example:
 Usage
 -----
 
-1. Install mpack, dumpasn1 and openssl:
+1.  Install mpack, dumpasn1 and openssl:
 
         $ sudo apt-get install mpack dumpasn1 openssl
 
-2. Compile the code:
+2.  Compile the code:
 
         $ make
         cc -Wall -g -O3 -funroll-loops -fwhole-program  -o rc2-40-cbc rc2-40-cbc.c
 
-3. Save the email message to a file and extract the smime attachment:
+3.  Save the email message to a file and extract the smime attachment:
 
         $ munpack example.mime
         smime.p7m (application/x-pkcs7-mime)
 
-4. Find the initialization vector (iv) and the ciphertext:
+4.  Find the initialization vector (iv) and the ciphertext:
 
         $ dumpasn1 smime.p7m | grep rc2 -A 8
          452    8:           OBJECT IDENTIFIER rc2CBC (1 2 840 113549 3 2)
@@ -74,7 +74,7 @@ Usage
                  :           3E 8A F8 2B 73 FF C1 40 38 E4 65 BC C3 7B 0B DA
         0 warnings, 0 errors.
 
-   Explanations:
+    Explanations:
 
         byte 464: rc2ParameterVersion (160 ->  40 effective-key-bits,
                                        120 ->  64 effective-key-bits,
@@ -82,7 +82,7 @@ Usage
         byte 468: iv (8 bytes initialization vector)
         byte 478: ciphertext (131408 bytes, we need only the first 32 bytes)
 
-5. Brute force (may take some time, around 200 CPU hours in the example output below):
+5.  Brute force (may take some time, around 200 CPU hours in the example output below):
 
         $ ./rc2-40-cbc FEDCBA9876543210 8AC497D81B21050DF0E4B4D5BA39DC0C3E8AF82B73FFC14038E465BCC37B0BDA | tee log
             IV: fedcba9876543210
@@ -91,29 +91,29 @@ Usage
         Status: 0001000000    0:00:11    0.002%  1525201/s  -> ETA 200:14:45
            Key: 0001020304  446174653a204d6f6e2c203136204d617920323031312030383a32313a333820  |Date: Mon, 16 May 2011 08:21:38 |
 
-   Limit the key value to parallelize the calculation, e.g.:
+    Limit the key value to parallelize the calculation, e.g.:
 
         $ ./rc2-40-cbc FEDCBA9876543210 8AC497D81B21050DF0E4B4D5BA39DC0C3E8AF82B73FFC14038E465BCC37B0BDA 0000000000 3FFFFFFFFF
         $ ./rc2-40-cbc FEDCBA9876543210 8AC497D81B21050DF0E4B4D5BA39DC0C3E8AF82B73FFC14038E465BCC37B0BDA 4000000000 7FFFFFFFFF
         $ ./rc2-40-cbc FEDCBA9876543210 8AC497D81B21050DF0E4B4D5BA39DC0C3E8AF82B73FFC14038E465BCC37B0BDA 8000000000 BFFFFFFFFF
         $ ./rc2-40-cbc FEDCBA9876543210 8AC497D81B21050DF0E4B4D5BA39DC0C3E8AF82B73FFC14038E465BCC37B0BDA C000000000 FFFFFFFFFF
 
-   NOTE: The tool searches for printable strings (isprint||isspace), so you might get false positives.
+    NOTE: The tool searches for printable strings (isprint||isspace), so you might get false positives.
 
-6. Copy the message data (see dumpasn1 output):
+6.  Copy the message data (see dumpasn1 output):
 
         $ dd if=smime.p7m bs=1 skip=483 count=131408 of=smime.data
 
-7. Verify that you have copied the desired data (again, see dumpasn1 output):
+7.  Verify that you have copied the desired data (again, see dumpasn1 output):
 
         $ hexdump -C smime.data | head -n 1
         00000000  8a c4 97 d8 1b 21 05 0d  f0 e4 b4 d5 ba 39 dc 0c  |.....!.......9..|
 
-8. Decrypt the message:
+8.  Decrypt the message:
 
         $ openssl rc2-40-cbc -d -in smime.data -out plain.mime -iv FEDCBA9876543210 -K 0001020304
 
-9. Unpack the mime message:
+9.  Unpack the mime message:
 
         $ munpack -t plain.mime
 
