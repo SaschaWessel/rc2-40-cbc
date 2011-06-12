@@ -34,12 +34,12 @@ This will take around 150 - 250 CPU hours, which is around one day on a CPU
 with 8 cores. If the plaintext only contains space and printable characters,
 the key and the plaintext is written to stdout. Example:
 
-        $ ./rc2-40-cbc FEDCBA9876543210 8AC497D81B21050DF0E4B4D5BA39DC0C3E8AF82B73FFC14038E465BCC37B0BDA
-            IV: fedcba9876543210
-        Cipher: 8ac497d81b21050df0e4b4d5ba39dc0c3e8af82b73ffc14038e465bcc37b0bda
-         Range: 0000000000 - ffffffffff
-        Status: 0001000000    0:00:11    0.002%  1525201/s  -> ETA 200:14:45
-           Key: 0001020304  446174653a204d6f6e2c203136204d617920323031312030383a32313a333820  |Date: Mon, 16 May 2011 08:21:38 |
+    $ ./rc2-40-cbc FEDCBA9876543210 8AC497D81B21050DF0E4B4D5BA39DC0C3E8AF82B73FFC14038E465BCC37B0BDA
+        IV: fedcba9876543210
+    Cipher: 8ac497d81b21050df0e4b4d5ba39dc0c3e8af82b73ffc14038e465bcc37b0bda
+     Range: 0000000000 - ffffffffff
+    Status: 0001000000    0:00:11    0.002%  1525201/s  -> ETA 200:14:45
+       Key: 0001020304  446174653a204d6f6e2c203136204d617920323031312030383a32313a333820  |Date: Mon, 16 May 2011 08:21:38 |
 
 [3] RC2 source: <http://groups.google.com/group/sci.crypt/msg/f383f5dae68ebc70>
 
